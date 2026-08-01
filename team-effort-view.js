@@ -289,11 +289,15 @@ function renderTimelineChart(timeline) {
       });
     });
   } else {
+    // Average utilisation = total effort in the bucket ÷ number of members who contributed
     datasets.push({
       type: 'bar',
-      label: 'Total team effort %',
+      label: 'Average team effort %',
       data: timeline.buckets.map(function (b) {
-        return Object.keys(b.totals).reduce(function (sum, id) { return sum + b.totals[id]; }, 0);
+        var memberIdsInBucket = Object.keys(b.totals);
+        var sum = memberIdsInBucket.reduce(function (s, id) { return s + b.totals[id]; }, 0);
+        var count = memberIdsInBucket.length;
+        return count > 0 ? sum / count : 0;
       }),
       backgroundColor: '#0079BF',
       stack: 'effort'
@@ -313,8 +317,12 @@ function renderTimelineChart(timeline) {
         tooltip: {
           callbacks: {
             footer: function (items) {
-              var sum = items.reduce(function (s, item) { return s + item.parsed.y; }, 0);
-              return 'Total: ' + sum + '%';
+              if (state.stacked) {
+                var sum = items.reduce(function (s, item) { return s + item.parsed.y; }, 0);
+                return 'Total: ' + sum + '%';
+              }
+              // Non-stacked is already the average
+              return 'Average: ' + (items[0] ? items[0].parsed.y : 0) + '%';
             }
           }
         }
