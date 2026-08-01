@@ -66,8 +66,8 @@ TrelloPowerUp.initialize({
   'board-buttons': function (t, opts) {
     return [{
       icon: {
-        dark: './images/icon-white.svg',
-        light: './images/icon-dark.svg'
+        dark: 'https://spyrosgg.github.io/Team-utilisation-tracker-v2/images/icon-white.svg',
+        light: 'https://spyrosgg.github.io/Team-utilisation-tracker-v2/images/icon-dark.svg'
       },
       text: 'Team Effort',
       callback: function (t) {
